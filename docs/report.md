@@ -1,4 +1,4 @@
-# TITULO DO PROJETO
+# EcoDurable: Dashboard Obsolescência Programada 
 
 
 **Alice Cerbino Soares, alice.cerbino.me@gmail.com**
