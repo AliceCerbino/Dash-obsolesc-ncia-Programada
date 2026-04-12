@@ -1,28 +1,31 @@
-# Nome do projeto
+# EcoDurable: Dashboard Obsolescência Programada 
 
-Escreva um ou dois parágrafos resumindo o objetivo do seu projeto. Lembrando que o objeto é desenvolver um sistema inteligente. Você deve mencionar o produto que está sendo desenvolvido, e não o que se espera obter com este produto.
+Projeto acadêmico para a disciplina de Engenharia de Software > Foco: ODS 12 - Consumo e Produção Responsáveis
 
-## Integrantes
+A obsolescência programada trata-se do produtor programar um produto para que os seu tempo de vida útil dure menos do que a sua capacidade tecnologica seria capaz de permitir, propositalmente. Ela é uma das grandes responsáveis pelo aumento de geração de lixo e do consumismo. 
 
-* Nome completo do aluno 1
-* Nome completo do aluno 2
-* Nome completo do aluno 3
-* Nome completo do aluno 4
+## Estrutura 
 
-## Professor
-
-* Nome completo do professor (Prof. Hugo Bastos de Paula)
-
-## Instruções de utilização
-
-Assim que a primeira versão do sistema estiver disponível, deverá complementar com as instruções de utilização. Descreva como instalar eventuais dependências e como executar a aplicação.
+.
+├── assets/
+│   ├── data
+│   ├── models
+│   ├── results
+├── data/
+│   └── raw/
+├── docs/
+│   └── document
+│   └── images/
+└── src/
+└── help/
+    
 
 ## Histórico de versões
 
 * 0.1.1
-    * CHANGE: Atualização das documentacoes. Código permaneceu inalterado.
+    * CHANGE: Atualização das documentacoes.
 * 0.1.0
-    * Indução do primeiro modelo do agente inteligente.
+    * Indução do primeiro dash.
 * 0.0.1
     * Trabalhando na preparação dos dados.
 
