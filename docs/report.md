@@ -1,18 +1,13 @@
 # TITULO DO PROJETO
 
 
-**Nome completo do Aluno 1, email do aluno 1**
-
-**Nome completo do Aluno 2, email do aluno 2**
-
-**Nome completo do Aluno 3, email do aluno 3**
+**Alice Cerbino Soares, alice.cerbino.me@gmail.com**
 
 ---
 
-Professores:
+Professor:
 
-** Prof. Nome do Prof 1 **
-** Prof. Nome do Prof 2 **
+** Prof. Jose Laerte Pieres Xavier Junior **
 
 ---
 
@@ -29,81 +24,73 @@ mostrar algum resultado relevante do trabalho (até 10 linhas)._
 
 
 ## Introdução
-
-A introdução deve apresentar de dois a quatro parágrafos de contextualização do trabalho. 
-
 ###    Contextualização
 
-Na **contextualização**, o aluno deve dizer do que se trata o trabalho, em que área ou contexto se insere. 
-A **contextualização** deve ser desenvolvida de algo mais genérico para algo mais específico. 
-A citação de pesquisas quantitativas é bem aceita aqui (corretamente referenciadas).
+O projeto EcoDurable surge como uma resposta tecnológica ao desafio imposto pela obsolescência programada, prática industrial que limita deliberadamente a vida útil de produtos para forçar ciclos de consumo mais curtos. Este fenômeno é um dos principais vetores do crescimento exponencial de resíduos eletroeletrônicos, impactando diretamente a sustentabilidade ambiental e o direito do consumidor.
+
+Alinhado ao Objetivo de Desenvolvimento Sustentável 12 (Consumo e Produção Responsáveis) da Agenda 2030 da ONU, esta aplicação propõe a criação de um ecossistema de dados transparente. Através de um Dashboard de Análise de Durabilidade, o software processa registros de falhas e reclamações provenientes de bases de dados públicas para quantificar a confiabilidade de dispositivos e fabricantes.
+
+Sob a ótica da Engenharia de Software, o projeto aplica conceitos de arquitetura cliente-servidor, modelagem relacional e gerenciamento ágil para transformar dados brutos em métricas acionáveis, auxiliando consumidores em decisões de compra mais conscientes e fornecendo subsídios para o monitoramento de práticas de mercado predatórias.
 
 ###    Problema
 
-Nesse momento você deve apresentar o problema que seu agente pretende resolver. 
-No entanto, não é a hora de comentar sobre a aplicação.
-Descreva também o contexto em que essa aplicação será usada, se  houver: 
-empresa, tecnologias, etc. Novamente, descreva apenas o que de  fato existir, 
-pois ainda não é a hora de apresentar requisitos  detalhados ou projetos.
-
-O **problema** pode ser algo vivido em uma empresa específica. Neste caso, o aluno deve 
-sucintamente apresentar o cenário de problema da empresa. A empresa só deve ser citada 
-explicitamente se o aluno tiver autorização para tal.
-
-> **Links Úteis**:
-> - [Objetivos, Problema de pesquisa e Justificativa](https://medium.com/@versioparole/objetivos-problema-de-pesquisa-e-justificativa-c98c8233b9c3)
-
+O descarte precoce de produtos devido à baixa durabilidade gera um volume alarmante de resíduos sólidos. Consumidores muitas vezes carecem de dados consolidados sobre quais marcas e modelos apresentam defeitos em curto espaço de tempo. Este dashboard visa transformar registros de reclamações em índices de durabilidade e reparabilidade.
 
 ###    Objetivo geral
 
-Nesta seção deve-se escrever um pequeno parágrafo ou frase com o **objetivo geral** 
-do trabalho. O objetivo deve ser bem direto, específico e definido com verbos de 
-ação (elaborar, propor, avaliar, comparar etc.). No caso deste projeto, o objetivo é
-"desenvolver um sistema inteligente para ...". O seu objetivo geral deve ser uma
-pergunta orientada a dados. Ou seja, ela deve incluir de forma geral os dados em que
-os modelos irão se basear para atingir o objetivo.
+Este projeto aborda o ODS 12, especificamente a meta de reduzir a geração de resíduos. O objetivo é fornecer uma ferramenta de transparência que utilize dados de reclamações públicas para medir a durabilidade real de produtos eletrônicos e eletrodomésticos, combatendo a obsolescência programada.
 
-####    Objetivos específicos
+###   Tipo de Solução 
 
-Apresente também alguns (pelo menos 2) **objetivos específicos** dependendo de onde 
-você vai querer concentrar a sua prática investigativa, ou como você vai aprofundar 
-no seu trabalho.
+A solução é um Dashboard de Dados com arquitetura dividida em:
 
-> **Links Úteis**:
-> - [Objetivo geral e objetivo específico: como fazer e quais verbos utilizar](https://blog.mettzer.com/diferenca-entre-objetivo-geral-e-objetivo-especifico/)
+> Backend: API para processamento, filtragem e agregação de grandes volumes de dados.
+
+> Banco de Dados: Persistência de dados limpos de fontes como o Consumidor.gov.br.
+
+> Frontend: Interface analítica com gráficos de desempenho e rankings de fabricantes.> 
 
 
 ###    Justificativas
 
-Mostre também as **justificativas** para o  desenvolvimento do seu trabalho e, caso deseje, 
-destaque alguma contribuição do trabalho.
+A escolha pelo desenvolvimento do EcoDurable fundamenta-se na necessidade de instrumentalizar o consumidor frente à crescente opacidade do ciclo de vida de produtos tecnológicos. Embora a Política Nacional de Resíduos Sólidos e o Código de Defesa do Consumidor ofereçam amparo legal, a prática da obsolescência programada persiste devido à dispersão de dados técnicos e de performance real.
 
-A justific ativa deve descrever a importância ou a motivação para o desenvolvimento do 
-sistema inteligente escolhido. Indique as razões pelas quais você escolheu seus objetivos 
-específicos ou as razões para aprofundar em certos aspectos do software.
+Do ponto de vista técnico e de Engenharia de Software, o desenvolvimento desta solução justifica-se pela complexidade de tratamento de dados heterogêneos. A aplicação de um dashboard com suporte de backend e banco de dados é essencial para:
 
-> **Links Úteis**:
-> - [Como montar a justificativa](https://guiadamonografia.com.br/como-montar-justificativa-do-tcc/)
+- Agregação de Valor: Transformar dados brutos de reclamações em indicadores estatísticos (como o índice de morte prematura), algo que páginas estáticas não comportam.
 
+- Escalabilidade e Persistência: Permitir o armazenamento histórico de falhas, possibilitando a análise de tendências de mercado ao longo de diferentes sprints de dados.
 
+- Rigor Metodológico: Aplicar padrões de projeto e testes de software para garantir que a métrica de durabilidade exibida seja íntegra e auditável.
+
+- Socialmente, o projeto contribui para a Economia Circular, ao incentivar a escolha por produtos mais duráveis e de fácil reparação, reduzindo o impacto ambiental e os custos financeiros derivados do descarte precoce. 
 
 ##    Público alvo
 
-Descreva quem serão as pessoas que usarão a sua aplicação indicando os diferentes perfis. 
-O objetivo aqui não é definir quem serão os clientes ou quais serão os papéis dos usuários 
-na aplicação. A ideia é, dentro do possível, conhecer um pouco mais sobre o perfil dos 
-usuários: conhecimentos prévios, relação com a tecnologia, relações
-hierárquicas, etc.
+O EcoDurable foi projetado para atender diferentes camadas da sociedade interessadas na durabilidade de bens de consumo e na sustentabilidade:
+- Consumidores Finais (B2C): Pessoas físicas que buscam informações técnicas e históricas sobre a vida útil de eletroeletrônicos antes de realizar uma compra, visando o melhor custo-benefício e a redução do descarte precoce.
 
-Adicione informações sobre o público-alvo por meio de uma descrição textual, 
-diagramas de personas e mapa de stakeholders.
+- Órgãos de Defesa do Consumidor e ONGs: Entidades (como o Procon ou institutos de defesa do consumidor) que necessitam de dados consolidados para identificar padrões de comportamento predatório por parte de fabricantes e embasar ações de fiscalização ou campanhas de conscientização.
 
-> **Links Úteis**:
-> - [Público-alvo](https://blog.hotmart.com/pt-br/publico-alvo/)
-> - [Como definir o público alvo](https://exame.com/pme/5-dicas-essenciais-para-definir-o-publico-alvo-do-seu-negocio/)
-> - [Público-alvo: o que é, tipos, como definir seu público e exemplos](https://klickpages.com.br/blog/publico-alvo-o-que-e/)
-> - [Qual a diferença entre público-alvo e persona?](https://rockcontent.com/blog/diferenca-publico-alvo-e-persona/)
+- Pesquisadores e Gestores Ambientais: Profissionais que analisam o ciclo de vida dos produtos e o impacto da obsolescência programada na geração de resíduos sólidos (e-waste), utilizando o dashboard como ferramenta de suporte para estudos sobre economia circular.
 
+### Requisitos 
+
+##### Requisitos Funcionais (RF)
+- RF01: O sistema deve permitir o upload e processamento de datasets de reclamações em formato CSV/JSON.
+
+- RF02: O sistema deve calcular o índice de "Morte Prematura" (relação entre tempo de compra e tempo de falha).
+
+- RF03: O sistema deve gerar rankings de fabricantes por categoria de produto.
+
+- RF04: O sistema deve oferecer filtros por região, marca e tipo de defeito.
+
+#### Requisitos Não Funcionais (RNF)
+- RNF01: O backend deve ser capaz de realizar agregações em bases de dados superiores a 10.000 registros com tempo de resposta inferior a 2 segundos.
+
+- RNF02: Os dados processados devem ser persistidos em banco de dados relacional para garantir integridade.
+
+- RNF03: A interface deve seguir padrões de acessibilidade para visualização de gráficos.
 
 ## Análise exploratórida dos dados
 
