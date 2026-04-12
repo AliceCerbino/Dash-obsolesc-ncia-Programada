@@ -14,7 +14,7 @@ A obsolescência programada trata-se do produtor programar um produto para que o
 ├── data/
 │   └── raw/
 ├── docs/
-│   └── document
+│   └── report.md (DOCUMENTAÇÃO DO PROJETO EM MARKDOWN)/
 │   └── images/
 └── src/
 └── help/
