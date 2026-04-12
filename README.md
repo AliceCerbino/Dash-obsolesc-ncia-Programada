@@ -5,7 +5,7 @@ Projeto acadêmico para a disciplina de Engenharia de Software > Foco: ODS 12 - 
 A obsolescência programada trata-se do produtor programar um produto para que os seu tempo de vida útil dure menos do que a sua capacidade tecnologica seria capaz de permitir, propositalmente. Ela é uma das grandes responsáveis pelo aumento de geração de lixo e do consumismo. 
 
 ## Estrutura 
-
+```text
 .
 ├── assets/
 │   ├── data
@@ -18,7 +18,7 @@ A obsolescência programada trata-se do produtor programar um produto para que o
 │   └── images/
 └── src/
 └── help/
-    
+```
 
 ## Histórico de versões
 
