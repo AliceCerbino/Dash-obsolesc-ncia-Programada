@@ -76,7 +76,7 @@ O EcoDurable foi projetado para atender diferentes camadas da sociedade interess
 
 ### Diagrama de Caso de Uso
 
-![Diagrama caso de uso](docs/imagens/Diagrama Caso de Uso.png)
+<img width="1364" height="239" alt="Diagrama Caso de Uso" src="https://github.com/user-attachments/assets/005f20fa-ed91-4c17-af5f-6ffa9d01dfb1" />
 
 ## Requisitos 
 
