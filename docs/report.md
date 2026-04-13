@@ -74,9 +74,13 @@ O EcoDurable foi projetado para atender diferentes camadas da sociedade interess
 
 - Pesquisadores e Gestores Ambientais: Profissionais que analisam o ciclo de vida dos produtos e o impacto da obsolescência programada na geração de resíduos sólidos (e-waste), utilizando o dashboard como ferramenta de suporte para estudos sobre economia circular.
 
-### Requisitos 
+### Diagrama de Caso de Uso
 
-##### Requisitos Funcionais (RF)
+
+
+## Requisitos 
+
+### Requisitos Funcionais (RF)
 - RF01: O sistema deve permitir o upload e processamento de datasets de reclamações em formato CSV/JSON.
 
 - RF02: O sistema deve calcular o índice de "Morte Prematura" (relação entre tempo de compra e tempo de falha).
@@ -85,7 +89,7 @@ O EcoDurable foi projetado para atender diferentes camadas da sociedade interess
 
 - RF04: O sistema deve oferecer filtros por região, marca e tipo de defeito.
 
-#### Requisitos Não Funcionais (RNF)
+### Requisitos Não Funcionais (RNF)
 - RNF01: O backend deve ser capaz de realizar agregações em bases de dados superiores a 10.000 registros com tempo de resposta inferior a 2 segundos.
 
 - RNF02: Os dados processados devem ser persistidos em banco de dados relacional para garantir integridade.
