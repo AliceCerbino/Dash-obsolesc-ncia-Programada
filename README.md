@@ -14,7 +14,21 @@ A obsolescência programada trata-se do produtor programar um produto para que o
 ├── data/
 │   └── raw/
 ├── docs/
-│   └── report.md (DOCUMENTAÇÃO DO PROJETO EM MARKDOWN)/
+│   └── report.md/
+|      └── Introdução
+|         └── Contextualização
+|         └── Problema
+|         └── Objetivo Geral
+|         └── Tipo de Solução
+|         └── Justificativas
+|      └── Público Alvo
+|      └── Requisitos
+|         └── Requisitos Funcionais
+|         └── Requisitos Não Funcionais
+|      └── Arquitetura
+|         └── Escolha de Tecnologias
+|         └── Projeto de Arquitetura
+|         └── Justificativa da Arquitetura
 │   └── images/
 └── src/
 └── help/
