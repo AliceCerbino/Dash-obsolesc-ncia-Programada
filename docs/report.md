@@ -96,6 +96,104 @@ O EcoDurable foi projetado para atender diferentes camadas da sociedade interess
 
 - RNF03: A interface deve seguir padrões de acessibilidade para visualização de gráficos.
 
+## Arquitetura
+
+### Escolhas de Tecnologias
+
+As tecnologias selecionadas para este projeto visam um equilíbrio estratégico entre estabilidade, ecossistema e facilidade de integração, permitindo que o sistema seja sustentável a longo prazo.
+
+Para o Backend Core, optamos pelo Java 17 acompanhado do framework Spring Boot. Esta escolha baseia-se na robustez que o ecossistema Java oferece, especialmente no que tange à injeção de dependência. Isso é fundamental para manter nossos componentes desacoplados, além de oferecer tipagem forte, o que é crucial para garantir a integridade das regras de negócio complexas que o projeto exige.
+
+No que se refere à Persistência de Dados, utilizamos o PostgreSQL. A decisão foi tomada priorizando a conformidade com as propriedades ACID (Atomicidade, Consistência, Isolamento e Durabilidade), que são essenciais para dados de conformidade e auditoria. Além disso, o PostgreSQL possui um suporte excelente para consultas analíticas complexas, o que facilita a geração de métricas de durabilidade.
+
+Para a Integração, adotamos uma Arquitetura de Adaptadores. Este padrão permite isolar as instabilidades inerentes a APIs externas — como fontes governamentais ou dados públicos — dentro de módulos específicos. Desta forma, protegemos o restante do sistema contra mudanças bruscas nessas fontes externas.
+
+Por fim, delegamos a Visualização ao Power BI. Ao utilizar uma ferramenta dedicada ao Business Intelligence, removemos a sobrecarga de renderização de gráficos complexos do backend. Isso nos permite focar o desenvolvimento do nosso sistema exclusivamente no processamento, tratamento e lógica de análise de dados, delegando a apresentação interativa a uma plataforma otimizada para esse fim.
+
+### Projeto de Arquitetura
+
+O EcoDurable System é uma plataforma analítica projetada para consolidar, processar e visualizar métricas de durabilidade e obsolescência programada de produtos. O sistema atua como uma ponte entre dados públicos brutos e decisões informadas, servindo desde consumidores finais até órgãos de fiscalização e pesquisadores de mercado.
+
+Para garantir clareza, a arquitetura foi desenhada utilizando o Modelo C4, permitindo uma decomposição hierárquica ("zoom") que separa as preocupações de negócio das preocupações técnicas:
+
+> Nível 1 (Contexto): Define o papel do sistema no ecossistema (usuários vs. fontes de dados externas).
+
+> Nível 2 (Containers): Define a "infraestrutura física" (onde o código vive).
+
+> Nível 3 (Componentes): Define a "organização interna" do Backend (módulos lógicos).
+
+> Nível 4 (Código): Define o "contrato" de implementação (interfaces e classes).
+
+#### System Context
+
+<img width="1920" height="1080" alt="Model C4 - Context" src="https://github.com/user-attachments/assets/7ceb1e72-c567-4537-941e-9c5ff836ea9e" />
+
+O sistema não opera em isolamento. Ele atua como um hub central que:
+
+- Ingere: Coleta dados de fontes externas (governamentais, índices públicos).
+
+- Processa: Transforma esses dados em inteligência (métricas de falha, vida útil).
+
+- Distribui: Fornece relatórios via E-mail e Dashboards interativos (Power BI), com foco no Órgão Fiscalizador.
+
+#### Container
+
+<img width="1920" height="1080" alt="Model C4 - Container" src="https://github.com/user-attachments/assets/9aadefbc-4655-44dd-a796-404926588e20" />
+
+Nossa arquitetura de containers é baseada em desacoplamento funcional:
+
+- Frontend (Power BI): Focado exclusivamente em UX e visualização, mantendo a camada de apresentação independente da lógica de cálculo.
+
+- Backend (API REST): O orquestrador central. Gerencia toda a lógica de negócio, autenticação (Spring Security) e roteamento.
+
+- ETL (Data Processing Service): Um container dedicado à ingestão e limpeza. Ao separar o ETL do Backend principal, garantimos que processos de ingestão de alto volume não impactem a performance da API.
+
+- Storage & Database (PostgreSQL): Separação clara entre o "Raw Data" (Object Storage - dados brutos) e o "Processed Data" (Database - métricas estruturadas e históricas).
+
+#### Component
+
+<img width="1920" height="1080" alt="Model C4 - Component" src="https://github.com/user-attachments/assets/e712de74-e0cc-47fd-8445-12668e6ea16b" />
+
+Dentro do Backend, a organização segue o padrão de Componentes Spring:
+
+- API Controller: Porta de entrada e gestão de segurança.
+
+- Serviços de Domínio (Filtering Engine, Ranking Engine, Data Processing): Onde reside a inteligência. O Ranking Engine não acessa banco de dados diretamente; ele solicita dados processados, mantendo a responsabilidade limitada.
+
+- Data Repository (JPA): A única camada com permissão de manipulação direta de banco, garantindo consistência.
+
+#### Code
+
+<img width="1920" height="1080" alt="Model C4 - Code" src="https://github.com/user-attachments/assets/96971afa-f292-47c8-8cae-787e6b2f725b" />
+
+Como visto no diagrama de código, utilizamos a interface IDataSourceAdapter. Isso significa que, independentemente de onde o dado venha (Governo, API Pública, Arquivo local), o restante do sistema (Ranking, Processamento) enxerga apenas o contrato (fetchData()). Isso blinda o código contra mudanças externas. 
+
+#### Arquitetura Geral em Zoom
+
+<img width="1920" height="1080" alt="Model C4 - Visão Geral do Zoom" src="https://github.com/user-attachments/assets/bb51af35-3cc3-4af6-909c-fa2db0a7638e" />
+
+### Justificativa da Arquitetura
+
+A arquitetura adotada para o sistema EcoDurable fundamenta-se em princípios de design de software que visam mitigar a fragilidade sistêmica e promover a sustentabilidade do código a longo prazo. A estrutura proposta não é apenas uma organização lógica, mas uma estratégia deliberada para endereçar desafios fundamentais em sistemas de processamento de dados. A seguir, detalham-se os pilares que conferem resiliência, escalabilidade e manutenibilidade ao projeto.
+
+#### Mitigação do Acoplamento e Resiliência a Mudanças
+   
+A volatilidade de fontes de dados externas representa um risco constante para sistemas que dependem de integração via APIs de terceiros. Em arquiteturas monolíticas tradicionais, a lógica de negócio é frequentemente contaminada por detalhes técnicos de acesso a dados, o que gera um alto grau de acoplamento.
+
+O projeto EcoDurable endereça este desafio através da aplicação do padrão de projeto Adapter, combinado com o Princípio da Inversão de Dependência (DIP). Ao estabelecer uma interface contratual — IDataSourceAdapter — entre o serviço de domínio (RankingService) e os fornecedores de dados, o sistema torna-se agnóstico à origem da informação. Consequentemente, caso ocorram alterações estruturais na API do fornecedor, o impacto é restrito estritamente à classe que implementa o adaptador específico. A lógica de negócio permanece intacta, protegida por uma camada de abstração que isola a volatilidade externa, garantindo a continuidade operacional e reduzindo a necessidade de regressões em componentes críticos do sistema.
+
+#### Otimização de Recursos e Escalabilidade Independente
+
+A heterogeneidade das cargas de trabalho é um fator determinante para a eficiência computacional. O sistema distingue claramente entre dois perfis de processamento: a ingestão de dados brutos (ETL - Extract, Transform, Load) e a disponibilização de informações via API (Backend).
+
+Ao estratificar o processo de ETL em um container isolado e independente do serviço de API, a arquitetura permite uma gestão de recursos granular. Operações de processamento de dados massivos, que demandam alta capacidade de CPU e memória, não competem diretamente com os recursos necessários para a baixa latência de requisições HTTP do Frontend. Esta separação possibilita a alocação de infraestrutura específica para cada subdomínio — realizando o scale-up ou scale-out do processamento de dados sem onerar a disponibilidade do serviço de consulta do usuário. Esta abordagem não apenas otimiza o custo operacional (Cloud Spending), mas também elimina estrangulamentos de desempenho (bottlenecks) que ocorreriam em um ambiente unificado.
+
+#### Rigor Metodológico e Testabilidade
+
+A testabilidade é um indicador direto da maturidade de uma arquitetura. A arquitetura em camadas aqui proposta favorece a adoção de estratégias de Unit Testing de alta eficácia, ao promover a separação de responsabilidades (Separation of Concerns).
+
+Pela estrutura modular, cada componente pode ser validado de forma isolada, sem dependências externas. O RankingService, por exemplo, pode ser submetido a testes determinísticos mediante a injeção de mocks ou stubs que implementam a interface de dados, simulando diferentes cenários (sucesso, falha ou dados corrompidos) sem a necessidade de uma conexão real com o banco de dados ou ambiente de produção. Este isolamento metodológico reduz a complexidade dos testes, acelera os ciclos de feedback no desenvolvimento (Continuous Integration) e assegura que a integridade dos algoritmos de cálculo de durabilidade seja mantida a cada nova alteração, mitigando o risco de introdução de efeitos colaterais indesejados.
+
 ## Análise exploratórida dos dados
 
 ###    Dicionário de dados
