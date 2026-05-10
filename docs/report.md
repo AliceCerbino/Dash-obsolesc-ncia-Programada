@@ -194,50 +194,127 @@ A testabilidade é um indicador direto da maturidade de uma arquitetura. A arqui
 
 Pela estrutura modular, cada componente pode ser validado de forma isolada, sem dependências externas. O RankingService, por exemplo, pode ser submetido a testes determinísticos mediante a injeção de mocks ou stubs que implementam a interface de dados, simulando diferentes cenários (sucesso, falha ou dados corrompidos) sem a necessidade de uma conexão real com o banco de dados ou ambiente de produção. Este isolamento metodológico reduz a complexidade dos testes, acelera os ciclos de feedback no desenvolvimento (Continuous Integration) e assegura que a integridade dos algoritmos de cálculo de durabilidade seja mantida a cada nova alteração, mitigando o risco de introdução de efeitos colaterais indesejados.
 
-## Análise exploratórida dos dados
+## 3.1 Análise Exploratória dos Dados
 
-###    Dicionário de dados
+### 3.1.1 Descrição da Base de Dados
 
-Apresente uma descrição das bases de dados a serem utilizadas. 
-Dicionários de dados devem conter as bases de dados, os nomes dos atributos 
-com seu significado, seu tipo (inteiro, real, textual, categórico, etc).
+A base de dados utilizada neste trabalho é a *What a Waste Global Database*, disponibilizada publicamente pelo Banco Mundial. Trata-se de um repositório de dados secundários que consolida informações sobre geração e gestão de resíduos sólidos urbanos de países ao redor do mundo, coletadas a partir de relatórios governamentais, estudos regionais e levantamentos de campo realizados por especialistas do setor.
 
-Este projeto deve utilizar pelo menos duas fontes de dados. Uma fonte principal e 
-uma fonte para enriquecimentos dos dados principais.
+A base é composta por registros em nível de país, abrangendo nações de todas as regiões geográficas e faixas de renda, organizadas segundo a classificação do próprio Banco Mundial — baixa renda (LIC), renda média-baixa (LMC), renda média-alta (UMC) e alta renda (HIC). Cada registro agrega atributos quantitativos relacionados à geração, composição e tratamento dos resíduos, além de projeções de geração para os anos de 2030, 2040 e 2050.
 
+### 3.1.2 Seleção e Justificativa dos Atributos
 
-###    Descrição de dados
+Dos atributos disponíveis na base, foram selecionados aqueles com maior aderência ao fenômeno da obsolescência programada e à geração de resíduos associada ao descarte precoce de produtos. O quadro a seguir apresenta os atributos utilizados e suas respectivas justificativas:
 
-Utilize a análise descritiva baseada em estatística de primeira ordem para descrever os dados.
-Como descrever dados numéricos: média, desvio padrão, mínimo, máximo, quartis, histograma, etc.
-Como descrever dados qualitativos (categóricos): moda (valor mais frequente), quantidade de valores distintos (categorias), distribuição das categorias (histograma), etc.
+| Atributo | Descrição | Justificativa |
+|---|---|---|
+| `total_msw_total_msw_generated_tons_year` | Total de resíduos sólidos urbanos gerados por ano (toneladas) | Indicador central de volume de descarte por país |
+| `msw_total_msw_generated_kg_per_cap_per_day` | Geração per capita diária (kg/pessoa/dia) | Permite comparações independentes de tamanho populacional |
+| `composition_plastic_percent` | Percentual de plástico na composição dos resíduos | Proxy do descarte de produtos com componentes plásticos, diretamente relacionados a eletroeletrônicos |
+| `composition_metal_percent` | Percentual de metal na composição dos resíduos | Proxy do descarte de componentes metálicos de dispositivos eletrônicos |
+| `waste_treatment_recycling_percent` | Percentual de resíduos destinados à reciclagem | Indicador da capacidade de recuperação de materiais |
+| `waste_treatment_open_dumpsite_percent` | Percentual destinado a lixões a céu aberto | Indicador de inadequação no tratamento de resíduos |
+| `waste_collection_coverage_total_percent_of_waste` | Cobertura total do serviço de coleta de resíduos | Indicador de infraestrutura de gestão de resíduos |
+| `total_msw_total_msw_generated_tons_year_projected_2030` | Projeção de geração para 2030 (toneladas) | Permite análise de tendência futura do descarte |
+| `total_msw_total_msw_generated_tons_year_projected_2040` | Projeção de geração para 2040 (toneladas) | Permite análise de tendência futura do descarte |
+| `total_msw_total_msw_generated_tons_year_projected_2050` | Projeção de geração para 2050 (toneladas) | Cenário de longo prazo para impacto ambiental |
+| `region_id` | Identificador da região geográfica | Permite segmentação e análise regional |
+| `income_id` | Classificação de renda do país | Permite análise socioeconômica comparativa |
+| `country_name` | Nome do país | Atributo de geolocalização para visualizações em mapa |
 
+## 3.2 Preparação dos Dados
 
-## Preparação dos dados
+### 3.2.1 Importação e Conexão com a Base
 
-A preparação dos dados consiste dos seguintes passos:
+A base *What a Waste Global Database* foi importada diretamente no Microsoft Power BI Online no formato de planilha estruturada. Após a importação, os dados foram carregados no ambiente do Power Query Editor, ferramenta nativa do Power BI responsável pelo tratamento e transformação de dados antes de sua disponibilização para os visuais do dashboard.
 
-> - Seleção dos atributos
-> - Tratamentos dos valores faltantes ou omissos: remoção, substituição, indução, etc.
-> - Tratamento dos valores inconsistentes: conversão, remoção de dados duplicados, remoção ou tratamento de ouliers.
-> - Conversão de dados: p. ex. numérico para categórico, categórico para binário, etc.
+### 3.2.2 Transformação das Colunas de Projeção
 
+Um dos principais desafios identificados na estrutura original da base foi a disposição das projeções de geração de resíduos. Os valores referentes aos anos de 2030, 2040 e 2050 estavam armazenados como colunas independentes na mesma linha de cada país, no formato *wide*, conforme ilustrado abaixo:
 
-## Indução de modelos
+| País | Toneladas Atual | Projeção 2030 | Projeção 2040 | Projeção 2050 |
+|---|---|---|---|---|
+| Brasil | 79.000.000 | 95.000.000 | 112.000.000 | 130.000.000 |
 
-### Modelo 1: Algoritmo
+Este formato impede a construção de um gráfico de linhas temporal, pois o Power BI requer que os dados estejam no formato *long* — ou seja, cada ano como uma linha distinta. Para solucionar este problema, foi aplicada a operação de **despivotamento** (*Unpivot*) no Power Query, seguindo os passos:
 
-Substitua o título pelo nome do algoritmo que será utilizado. P. ex. árvore de decisão, rede neural, SVM, etc.
-Justifique a escolha do modelo.
-Apresente o processo utilizado para amostragem de dados (particionamento, cross-validation).
-Descreva os parâmetros utilizados. 
-Apresente trechos do código utilizado comentados. Se utilizou alguma ferramenta gráfica, apresente imagens
-com o fluxo de processamento.
+1. Seleção simultânea das quatro colunas de geração (`total_msw_total_msw_generated_tons_year`, `...projected_2030`, `...projected_2040`, `...projected_2050`)
+2. Aplicação da operação **"Despivotar Colunas Selecionadas"**
+3. Renomeação da coluna `Atributo` para `Ano` e da coluna `Valor` para `Total_Toneladas`
+4. Substituição dos valores textuais da coluna `Ano` pelos anos correspondentes: `2020`, `2030`, `2040` e `2050`
+5. Conversão da coluna `Ano` para o tipo de dado **Número Inteiro**
 
-### Modelo 2: Algoritmo
+Após a transformação, a estrutura resultante permitiu a construção do gráfico de linhas com projeção temporal, com cada ponto representando um ano distinto no eixo horizontal.
 
-Repita os passos anteriores para o segundo modelo.
+### 3.2.3 Criação de Medidas Calculadas (DAX)
 
+Para enriquecer a análise além dos atributos originais da base, foram criadas medidas calculadas utilizando a linguagem DAX (*Data Analysis Expressions*), nativa do Power BI. As medidas desenvolvidas são descritas a seguir.
+
+#### a) Índice de Risco por Obsolescência Programada
+
+Esta medida constitui o principal indicador analítico do dashboard. Combina a composição de materiais associados ao descarte de eletroeletrônicos — plástico e metal — com a capacidade de reciclagem do país, gerando um índice que quanto maior, maior o risco de acúmulo de resíduos relacionados à obsolescência programada:
+
+```dax
+Risco_Obsolescencia =
+AVERAGE('whatawaste'[composition_plastic_percent])
++ AVERAGE('whatawaste'[composition_metal_percent])
+- AVERAGE('whatawaste'[waste_treatment_recycling_percent])
+```
+
+A lógica da medida fundamenta-se na premissa de que países com alta concentração de plástico e metal nos resíduos, combinada com baixa taxa de reciclagem, apresentam maior vulnerabilidade ao impacto da obsolescência programada — descartando mais materiais potencialmente recuperáveis sem o devido tratamento.
+
+#### b) Crescimento Projetado até 2050
+
+Esta medida calcula o volume absoluto de resíduos adicionais que serão gerados até 2050 em relação ao cenário atual, fornecendo uma dimensão concreta do impacto futuro:
+
+```dax
+Crescimento_2050 =
+SUM('whatawaste'[total_msw_total_msw_generated_tons_year_projected_2050])
+- SUM('whatawaste'[total_msw_total_msw_generated_tons_year])
+```
+
+#### c) Lixo Não Reciclado
+
+Medida que estima o percentual médio de resíduos que não passa por nenhum processo de recuperação, somando o descarte em lixões com demais formas inadequadas de tratamento:
+
+```dax
+Lixo_Nao_Reciclado =
+100 - AVERAGE('whatawaste'[waste_treatment_recycling_percent])
+```
+
+## 3.3 Construção dos Gráficos e Visuais
+
+### 3.3.1 Mapa Coroplético — Distribuição Global de Resíduos
+
+O mapa coroplético foi construído utilizando o visual nativo **Mapa Preenchido** do Power BI. Cada país é colorido em uma escala de gradiente com base no volume total de resíduos gerados anualmente, utilizando a paleta do projeto — do branco (`#ffffff`) ao roxo escuro (`#894b96`). Países com maior geração de resíduos apresentam coloração mais intensa, permitindo uma leitura geográfica imediata da distribuição global do descarte.
+
+- **Campo Localização:** `country_name`
+- **Campo Saturação de cor:** `total_msw_total_msw_generated_tons_year`
+
+### 3.3.2 Mapa de Bolhas — Índice de Risco por Obsolescência
+
+O mapa de bolhas foi construído com o visual **Mapa** do Power BI, posicionando cada país como uma bolha cujo tamanho é proporcional ao Índice de Risco por Obsolescência Programada calculado via DAX. A saturação de cor representa o percentual de descarte em lixões a céu aberto, adicionando uma segunda dimensão analítica à visualização.
+
+- **Campo Localização:** `country_name`
+- **Campo Tamanho:** `Risco_Obsolescencia`
+- **Campo Saturação de cor:** `waste_treatment_open_dumpsite_percent`
+- **Campo Dicas de ferramentas:** `waste_treatment_recycling_percent`
+
+### 3.3.3 Gráfico de Rosca — Composição dos Resíduos
+
+O gráfico de rosca apresenta a composição percentual dos resíduos globais, com ênfase nos materiais associados ao descarte de produtos eletroeletrônicos. A visualização evidencia a proporção de plástico e metal em relação ao total de resíduos gerados.
+
+- **Campo Legenda:** categorias de composição (`composition_plastic_percent`, `composition_metal_percent`)
+- **Campo Valores:** média de cada categoria
+- **Paleta:** tons de roxo (`#894b96`, `#b07cba`, `#d4aede`)
+
+### 3.3.4 Gráfico de Linhas — Projeção de Resíduos até 2050
+
+Construído a partir dos dados transformados pelo despivotamento descrito na seção 3.2.2, o gráfico de linhas representa a evolução projetada da geração global de resíduos nos anos de 2020, 2030, 2040 e 2050. A visualização reforça o caráter prospectivo do dashboard, evidenciando o crescimento contínuo do volume de descarte caso os padrões de consumo e obsolescência se mantenham.
+
+- **Eixo X:** `Ano`
+- **Eixo Y:** Soma de `Total_Toneladas`
+- **Cor da linha:** `#894b96`
 
 ## Resultados
 
