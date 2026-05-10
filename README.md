@@ -7,9 +7,12 @@ A obsolescência programada trata-se do produtor programar um produto para que o
 ## Estrutura 
 ```text
 .
+├── Videos/
+│   ├── Vídeo 01
 ├── assets/
 │   ├── data
 │   ├── models
+|      └── Código de Tratamento e Extração dos Dados
 │   ├── results
 ├── data/
 │   └── raw/
