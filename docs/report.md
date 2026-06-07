@@ -80,21 +80,19 @@ O EcoDurable foi projetado para atender diferentes camadas da sociedade interess
 
 ## Requisitos 
 
-### Requisitos Funcionais (RF)
-- RF01: O sistema deve permitir o upload e processamento de datasets de reclamações em formato CSV/JSON.
+### Requisitos Funcionais
+RF01 – Visualizar mapa mundial.
+RF02 – Visualizar mapa da América Latina.
+RF03 – Visualizar mapa do Brasil.
+RF04 – Selecionar indicadores.
+RF05 – Exibir gráficos relacionados aos dados.
+RF06 – Filtrar informações por região.
 
-- RF02: O sistema deve calcular o índice de "Morte Prematura" (relação entre tempo de compra e tempo de falha).
-
-- RF03: O sistema deve gerar rankings de fabricantes por categoria de produto.
-
-- RF04: O sistema deve oferecer filtros por região, marca e tipo de defeito.
-
-### Requisitos Não Funcionais (RNF)
-- RNF01: O backend deve ser capaz de realizar agregações em bases de dados superiores a 10.000 registros com tempo de resposta inferior a 2 segundos.
-
-- RNF02: Os dados processados devem ser persistidos em banco de dados relacional para garantir integridade.
-
-- RNF03: A interface deve seguir padrões de acessibilidade para visualização de gráficos.
+### Requisitos Não Funcionais
+RNF01 – Interface responsiva.
+RNF02 – Tempo de carregamento inferior a 5 segundos.
+RNF03 – Dados armazenados em formato CSV/JSON.
+RNF04 – Aplicação executável via navegador.
 
 ## Arquitetura
 
