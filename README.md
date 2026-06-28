@@ -33,6 +33,7 @@ A obsolescência programada trata-se do produtor programar um produto para que o
 |         └── Projeto de Arquitetura
 |         └── Justificativa da Arquitetura
 │   └── images/
+│   └── EcoDurable.pbix
 └── src/
 └── help/
 ```
